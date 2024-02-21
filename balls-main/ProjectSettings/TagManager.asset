@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - obstacle
+  - joystick
+  - finish2
+  - finish3
+  - finish1
+  - bound
+  - finish4
+  - finish5
+  - red
+  - blue
+  - green
+  - yellow
+  - finish6
+  - finish7
+  - ground
+  - lvl3
+  - cheat_code_4
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - post process
+  - Water
+  - UI
+  - canvas
+  - canvasusername
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: canvas
+    uniqueID: 3500022671
+    locked: 0
+  - name: players
+    uniqueID: 2602952837
+    locked: 0
