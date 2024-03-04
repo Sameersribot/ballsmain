@@ -27,7 +27,7 @@ public class cannoncontroller : MonoBehaviour
 
         // Shoot bullet every shootInterval seconds
         timeSinceLastShot += Time.deltaTime;
-        if (timeSinceLastShot >= shootInterval)
+        if (timeSinceLastShot >= shootInterval && direction.magnitude< 60f) // this is the max distance of ball and cannon
         {
             Shoot();
             timeSinceLastShot = 0f;
@@ -40,7 +40,7 @@ public class cannoncontroller : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
         // Add any additional logic to the bullet (e.g., setting speed, damage, etc.)
         // bullet.GetComponent<BulletScript>().Initialize(speed, damage); // Example
-        bullet.GetComponent<Rigidbody2D>().AddForce(direction * 40f);
+        bullet.GetComponent<Rigidbody2D>().AddForce((direction) * 40f);
         // Destroy the bullet after a certain time (adjust as needed)
         Destroy(bullet, 3f);
     }

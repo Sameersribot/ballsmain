@@ -37,7 +37,7 @@ public class playerControls : MonoBehaviour
     public PostProcessVolume postProcessVolume;
     private Vignette vignette;
     private Bloom bloom;
-    private ChromaticAberration chromatic;
+
 
     // Intensity of the shake
     public float shakeIntensity = 1f;
@@ -71,8 +71,6 @@ public class playerControls : MonoBehaviour
             virgenetteInitial = vignette.intensity.value;
             postProcessVolume.profile.TryGetSettings(out bloom);
             bloomInitial = bloom.intensity.value;
-            postProcessVolume.profile.TryGetSettings(out chromatic);
-            chromaticInitial = chromatic.intensity.value;
         }
         else
         {
@@ -98,6 +96,8 @@ public class playerControls : MonoBehaviour
         {
             SceneManager.LoadScene("level3");
         }
+
+
     }
 
     void Move(float x, float y)
@@ -114,12 +114,14 @@ public class playerControls : MonoBehaviour
     {
         if (collision.gameObject.tag == "obstacle")
         {
-            spawn();
+            Invoke("spawn", 1.2f);
             lives--;
             Destroy(heart[lives]);
             FindObjectOfType<AudioMnagaer>().Play("restart");
             camerashakemanager.instance.cameraShake(impulseSource_out);
             Instantiate(particles, transform.position, Quaternion.identity);
+            gameObject.SetActive(false);
+
         }
         else if (collision.gameObject.tag == "finish1")
         {
@@ -262,6 +264,7 @@ public class playerControls : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x * acceleration + Time.deltaTime, rb.velocity.y*acceleration + Time.deltaTime);
             slider.value -= Time.deltaTime * 0.2f;
+            // Increase the vignette intensity 
             // Clamp speed to maxSpeed
         }
         else
@@ -283,8 +286,9 @@ public class playerControls : MonoBehaviour
             speedingEfct.SetActive(true);
             camerashakemanager.instance.cameraShake(impulseSource_speeding);          // Increase the vignette intensity
             vignette.intensity.value += 0.05f;
-            chromatic.intensity.value = Mathf.Min(chromatic.intensity.value, 0.65f);
-            chromatic.intensity.value += 0.05f;
+
+            //chromatic.intensity.value = Mathf.Min(chromatic.intensity.value, 0.65f);
+            //chromatic.intensity.value += 0.05f;
 
         }
         else if(Input.GetButton("Jump") && vignette != null)
@@ -293,20 +297,19 @@ public class playerControls : MonoBehaviour
             vignette.intensity.value = Mathf.Min(vignette.intensity.value, 0.35f);
             speedingEfct.SetActive(true);
             camerashakemanager.instance.cameraShake(impulseSource_speeding);          // Increase the vignette intensity
-
-            chromatic.intensity.value = Mathf.Min(chromatic.intensity.value, 0.65f);
-            chromatic.intensity.value += 0.05f;
-
-
-            // Increase the vignette intensity 
+                                                                                      //chromatic.intensity.value = Mathf.Min(chromatic.intensity.value, 0.65f);
+                                                                                      //chromatic.intensity.value += 0.05f;
             vignette.intensity.value += 0.05f;
-            
         }
         else if (vignette != null)
         {
             // Reset vignette intensity when not touching the screen
             vignette.intensity.value = virgenetteInitial;
-            chromatic.intensity.value = chromaticInitial;
+            //chromatic.intensity.value = chromaticInitial;
+            //CinemachineVirtualcamera.m_Lens.FieldOfView = Mathf.Clamp(CinemachineVirtualcamera.m_Lens.FieldOfView - 0.2f,initialCvCamvalue, 84.4f);
+            //CinemachineVirtualcamera.m_Lens.FieldOfView -= 0.2f;
+
+
             speedingEfct.SetActive(false);
         }
     }
@@ -318,22 +321,27 @@ public class playerControls : MonoBehaviour
     {
         if (levl == 0 && lives > 0)
         {
+            gameObject.SetActive(true);
             transform.position = pose;
         }
         else if (levl == 1 && lives > 0)
         {
+            gameObject.SetActive(true);
             transform.position = new Vector2(75.1f, 153f);
         }
         else if (levl == 2 && lives > 0)
         {
+            gameObject.SetActive(true);
             transform.position = new Vector2(76.1f, 290f);
                     }
         else if (levl == 3 && lives > 0)
         {
+            gameObject.SetActive(true);
             transform.position = new Vector2(76.1f, 347f);
                     }
         else if (levl == 4 && lives > 0)
         {
+            gameObject.SetActive(true);
             transform.position = new Vector2(76.1f, 393f);
         }
         else
@@ -345,5 +353,4 @@ public class playerControls : MonoBehaviour
     {
         bloom.intensity.value = bloomInitial;
     }
-    // Function to start the camera shake
 }

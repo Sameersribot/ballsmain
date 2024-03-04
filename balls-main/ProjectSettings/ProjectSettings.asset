@@ -16,7 +16,7 @@ PlayerSettings:
   productName: balls
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.35728344, g: 0.080153026, b: 0.745283, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
@@ -135,9 +135,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 1.0.2
-  preloadedAssets:
-  - {fileID: 5124084845772582818, guid: aa63d7d63d886ce42bd52f9a2bc2dfac, type: 2}
-  - {fileID: 11400000, guid: 1e31b6664fbf6464987c0a0c6c8e4315, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
