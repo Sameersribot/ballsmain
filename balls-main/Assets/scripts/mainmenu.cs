@@ -9,7 +9,7 @@ public class mainmenu : MonoBehaviour
     private AudioSource audioSource;
     public float rotateSpeed; // Duration of the pressing effect
     public GameObject background, mainCanvas, settingsCanvas, leftJoystick, rightJosytick;
-    public GameObject audiOff,audiOn, levelCanvas;
+    public GameObject audiOff,audiOn, creditsCanvas;
     public Color[] colors;
     public Color clrTransparent;
     public SpriteRenderer[] spritesColorChange;
@@ -169,5 +169,16 @@ public class mainmenu : MonoBehaviour
         }
         
     }
-
+    public void credits()
+    {
+        settingsCanvas.SetActive(false);
+        spritesColorChange[0].color = clrTransparent;
+        creditsCanvas.SetActive(true);
+    }
+    public void creditsBack()
+    {
+        settingsCanvas.SetActive(true);
+        spritesColorChange[0].color = colors[j];
+        creditsCanvas.SetActive(false);
+    }
 }

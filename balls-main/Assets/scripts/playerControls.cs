@@ -11,12 +11,14 @@ public class playerControls : MonoBehaviour
 {
     public float carSpeed = 10.0f;
     public GameObject particles, mainCanvas ,joystickCanvas, volumePost, speedingEfct;
+    public GameObject gameOverCanvas, enemyCircle;
     public Joystick joystick;
-    private int lives = 2, levl;
+    public int lives = 2, levl;
     //public CinemachineCameraOffset cinemachine;
     public GameObject[] heart;
     private float movementx, movementY;
     private Vector2 currentDirection, touchStartPos, movement;
+    public Vector2 initialEnemyPosition;
     private float initialY;
     TrailRenderer trail;
     public float sensitivity = 0.02f;
@@ -37,7 +39,8 @@ public class playerControls : MonoBehaviour
     public PostProcessVolume postProcessVolume;
     private Vignette vignette;
     private Bloom bloom;
-
+    public Camera mainCamera;
+    private Renderer[] renderers;
 
     // Intensity of the shake
     public float shakeIntensity = 1f;
@@ -49,13 +52,16 @@ public class playerControls : MonoBehaviour
 
     void Start()
     {
+        renderers = FindObjectsOfType<Renderer>();
         pose = transform.position;
+        FindObjectOfType<AudioMnagaer>().Play("baground");
         initialpos = 390f;
         finalpos = 427f;
         skincolor = 4;
         rotationSpeed = 20f;
         levl = 0;
         slider.value = 1;
+//        initialEnemyPosition = enemyCircle.transform.position;
         trail = gameObject.GetComponent<TrailRenderer>();
         impulseSource_speeding = GetComponent<CinemachineImpulseSource>();
         mainCanvas.SetActive(true);
@@ -84,21 +90,36 @@ public class playerControls : MonoBehaviour
         movementx = joystick.Horizontal;
         movementY = joystick.Vertical;
         // Iterate through all the active touches
-        
-        foreach(GameObject obstacle in obstacles)
+        RenderObjectsInCamera();
+
+        foreach (GameObject obstacle in obstacles)
         {
             obstacle.transform.Rotate(new Vector3(0f, 0f, 0.5f));
         }
         Move(movementx, movementY);
         power();
-        
-        if (Input.touchCount > 2)
+    }
+    private void RenderObjectsInCamera()
+    {
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
+
+        foreach (Renderer renderer in renderers)
         {
-            SceneManager.LoadScene("level3");
+            // Check if the renderer's bounds intersect with the camera's view frustum
+            if (GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
+            {
+                // The object is within the camera's view, so render it
+                renderer.enabled = true;
+            }
+            else
+            {
+                // The object is outside the camera's view, so don't render it
+                renderer.enabled = false;
+            }
         }
 
-
     }
+
 
     void Move(float x, float y)
     {
@@ -115,13 +136,11 @@ public class playerControls : MonoBehaviour
         if (collision.gameObject.tag == "obstacle")
         {
             Invoke("spawn", 1.2f);
-            lives--;
-            Destroy(heart[lives]);
+            heart[--lives].SetActive(false);
             FindObjectOfType<AudioMnagaer>().Play("restart");
             camerashakemanager.instance.cameraShake(impulseSource_out);
             Instantiate(particles, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
-
         }
         else if (collision.gameObject.tag == "finish1")
         {
@@ -185,48 +204,19 @@ public class playerControls : MonoBehaviour
     {
         transform.position = normal;
     }
-    /*public void redBtn()
-    {
-        Color colur = new Color(0.83f, 0.33f, 0.33f);
-        sprite.color = colur;
-        trail.startColor = colur;
-        trail.endColor = Color.white;
-        skincolor = 1;
-    }
-    public void yeloBtn()
-    {
-        Color colur = new Color(0.8218711f, 0.9622642f, 0.3939836f);
-        sprite.color = colur;
-        trail.startColor = colur;
-        trail.endColor = Color.white;
-        skincolor = 2;
-    }
-    public void greenBtn()
-    {
-        Color colur = new Color(0.347152f, 0.9339623f, 0.6448716f);
-        sprite.color = colur;
-        trail.startColor = colur;
-        trail.endColor = Color.white;
-        skincolor = 3;
-    }
-    public void bluBtn()
-    {
-        Color colur = new Color(0.148665f, 0.2221597f, 0.9056604f);
-        sprite.color = colur;
-        trail.startColor = colur;
-        trail.endColor = Color.white;
-        skincolor = 4;
-    }
-    */
+    
     public void clickPause()
     {
         mainCanvas.SetActive(false);
+        enemyCircle.SetActive(false);
+        enemyCircle.transform.position = initialEnemyPosition;
         FindObjectOfType<AudioMnagaer>().Play("button_click");
         joystickCanvas.SetActive(true);
     }
     public void clickPlay()
     {
         mainCanvas.SetActive(true);
+        enemyCircle.SetActive(true);
         FindObjectOfType<AudioMnagaer>().Play("button_click");
         joystickCanvas.SetActive(false);
     }
@@ -300,7 +290,7 @@ public class playerControls : MonoBehaviour
                                                                                       //chromatic.intensity.value = Mathf.Min(chromatic.intensity.value, 0.65f);
                                                                                       //chromatic.intensity.value += 0.05f;
             vignette.intensity.value += 0.05f;
-        }
+        } 
         else if (vignette != null)
         {
             // Reset vignette intensity when not touching the screen
@@ -317,7 +307,7 @@ public class playerControls : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    void spawn()
+    public void spawn()
     {
         if (levl == 0 && lives > 0)
         {
@@ -346,11 +336,31 @@ public class playerControls : MonoBehaviour
         }
         else
         {
-            restart();
+            gameObject.SetActive(true);
+            
+            mainCanvas.SetActive(false);
+            if (SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                DOTween.Kill(enemyCircle.transform, false);
+                enemyCircle.transform.position = initialEnemyPosition;
+                enemyCircle.SetActive(false);
+            }
+            gameOverCanvas.SetActive(true); 
         }
     }
     void finish()
     {
         bloom.intensity.value = bloomInitial;
+    }
+    public void watchVideo()
+    {
+        lives=1;
+        Debug.Log(lives);
+        heart[0].SetActive(true);
+        mainCanvas.SetActive(true);
+        if(SceneManager.GetActiveScene().buildIndex == 2) enemyCircle.SetActive(true);
+        FindObjectOfType<AudioMnagaer>().Play("button_click");
+        gameOverCanvas.SetActive(false);
+        spawn();
     }
 }

@@ -26,9 +26,9 @@ public class followobstacle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.DOMove(player.transform.position, 4.2f, false);
+        if(gameObject.activeInHierarchy) transform.DOMove(player.transform.position, 4.2f, false);
 
-        for (int i = 0; i <= 1; i++)
+        /*for (int i = 0; i <= 1; i++)
         {
             if (obstacleslvl8[i].transform.position.x - initialPos < 0.1f)
             {
@@ -49,6 +49,6 @@ public class followobstacle : MonoBehaviour
             {
                 obstacleslvl8[i].transform.DOMoveX(initialPoshort, 3f, false);
             }
-        }
+        }*/
     }
 }

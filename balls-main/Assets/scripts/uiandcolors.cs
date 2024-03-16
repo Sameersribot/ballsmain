@@ -12,6 +12,7 @@ public class uiandcolors : MonoBehaviour
     public SpriteRenderer circleSprite;
     public Gradient gradient;
     public Image[] btns;
+    
     private int colorIndex, levelIndex, currentSceneIndex;
     // Start is called before the first frame update
     void Start()
