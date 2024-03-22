@@ -21,6 +21,7 @@ TagManager:
   - ground
   - lvl3
   - cheat_code_4
+  - live
   layers:
   - Default
   - TransparentFX

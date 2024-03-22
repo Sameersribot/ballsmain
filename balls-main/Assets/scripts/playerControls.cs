@@ -41,7 +41,7 @@ public class playerControls : MonoBehaviour
     private Bloom bloom;
     public Camera mainCamera;
     private Renderer[] renderers;
-
+    public GameObject livesBurstGreen;
     // Intensity of the shake
     public float shakeIntensity = 1f;
 
@@ -198,6 +198,10 @@ public class playerControls : MonoBehaviour
         else if(collision.gameObject.tag == "cheat_code_4")
         {
             SceneManager.LoadScene("level4");
+        }
+        else if(collision.gameObject.tag == "live")
+        {
+            onTakingLive(collision.gameObject);
         }
     }
     private void ReflectBounce(Vector2 normal)
@@ -362,5 +366,20 @@ public class playerControls : MonoBehaviour
         FindObjectOfType<AudioMnagaer>().Play("button_click");
         gameOverCanvas.SetActive(false);
         spawn();
+    }
+    void onTakingLive(GameObject gameobj)
+    {
+        if (lives < 1)
+        {
+            lives++;
+            Instantiate(livesBurstGreen, transform.position, Quaternion.identity);
+            heart[lives - 1].SetActive(true);
+            gameobj.SetActive(false);
+        }
+        else
+        {
+            Instantiate(livesBurstGreen, transform.position, Quaternion.identity);
+            gameobj.SetActive(false);
+        }
     }
 }

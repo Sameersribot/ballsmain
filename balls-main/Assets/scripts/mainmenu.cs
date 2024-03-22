@@ -63,7 +63,7 @@ public class mainmenu : MonoBehaviour
                 SceneManager.LoadScene("levl2");
                 break;
             case 3:
-                SceneManager.LoadScene("level3");
+                SceneManager.LoadScene("SampleScene");
                 break;
             case 4:
                 SceneManager.LoadScene("level4");
