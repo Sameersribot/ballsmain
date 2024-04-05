@@ -54,7 +54,7 @@ public class playerControls : MonoBehaviour
     {
         renderers = FindObjectsOfType<Renderer>();
         pose = transform.position;
-        FindObjectOfType<AudioMnagaer>().Play("baground");
+        if(PlayerPrefs.GetInt("audioSettings") == 1) FindObjectOfType<AudioMnagaer>().Play("baground");
         initialpos = 390f;
         finalpos = 427f;
         skincolor = 4;
@@ -140,6 +140,7 @@ public class playerControls : MonoBehaviour
             FindObjectOfType<AudioMnagaer>().Play("restart");
             camerashakemanager.instance.cameraShake(impulseSource_out);
             Instantiate(particles, transform.position, Quaternion.identity);
+            Handheld.Vibrate();
             gameObject.SetActive(false);
         }
         else if (collision.gameObject.tag == "finish1")
@@ -369,11 +370,11 @@ public class playerControls : MonoBehaviour
     }
     void onTakingLive(GameObject gameobj)
     {
-        if (lives < 1)
+        if (lives < 2)
         {
             lives++;
             Instantiate(livesBurstGreen, transform.position, Quaternion.identity);
-            heart[lives - 1].SetActive(true);
+            heart[lives-1].SetActive(true);
             gameobj.SetActive(false);
         }
         else

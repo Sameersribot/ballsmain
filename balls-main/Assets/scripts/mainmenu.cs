@@ -53,7 +53,6 @@ public class mainmenu : MonoBehaviour
     {
         //audioSource.Play();
         Debug.Log("clicked");
-        audioSource.Play();
         switch (PlayerPrefs.GetInt("level"))
         {
             case 1:
@@ -77,7 +76,7 @@ public class mainmenu : MonoBehaviour
     {
         audioSource.Play();
         PlayerPrefs.SetInt("color", j);
-        Invoke("playy", 0.3f);
+        playy();
     }
     public void settings()
     {
@@ -96,6 +95,8 @@ public class mainmenu : MonoBehaviour
     }
     public void joystick()
     {
+        audioSource.Play();
+
         if (PlayerPrefs.GetInt("joystickAlignment") == 0)
         {
             PlayerPrefs.SetInt("joystickAlignment", 1);
@@ -111,21 +112,24 @@ public class mainmenu : MonoBehaviour
     }
     public void audioSettings()
     {
-        if (PlayerPrefs.GetInt("audioSettings") == 0)
+        audioSource.Play();
+
+        if (PlayerPrefs.GetInt("audioSettings") == 1)
         {
-            PlayerPrefs.SetInt("audioSettings", 1);
+            PlayerPrefs.SetInt("audioSettings", 0);
             audiOff.SetActive(false);
             audiOn.SetActive(true);
         }
         else
         {
-            PlayerPrefs.SetInt("audioSettings", 0);
+            PlayerPrefs.SetInt("audioSettings", 1);
             audiOff.SetActive(true);
             audiOn.SetActive(false);
         }
     }
     public void changeSkinRight()
     {
+        audioSource.Play();
         j = ++j % 5;
         particleSystem.startColor = colors[j];
         hardLight.Color = colors[j];
@@ -141,6 +145,7 @@ public class mainmenu : MonoBehaviour
     }
     public void changeSkinleft()
     {
+        audioSource.Play();
         j = Mathf.Abs(--j % 5);
         particleSystem.startColor = colors[j];
         hardLight.Color = colors[j];
@@ -171,12 +176,16 @@ public class mainmenu : MonoBehaviour
     }
     public void credits()
     {
+        audioSource.Play();
+
         settingsCanvas.SetActive(false);
         spritesColorChange[0].color = clrTransparent;
         creditsCanvas.SetActive(true);
     }
     public void creditsBack()
     {
+        audioSource.Play();
+
         settingsCanvas.SetActive(true);
         spritesColorChange[0].color = colors[j];
         creditsCanvas.SetActive(false);
