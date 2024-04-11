@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "224193102533",
+    "project_id": "glow-duct",
+    "storage_bucket": "glow-duct.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224193102533:android:09ef1ffcc3886bd825e6ac",
+        "android_client_info": {
+          "package_name": "com.gaskit.glowduct"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCILHORl_WORXriCc-IsxEdxIUbepFtLAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

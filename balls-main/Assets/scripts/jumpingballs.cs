@@ -5,7 +5,7 @@ using UnityEngine;
 public class jumpingballs : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public GameObject obsRed, redBall, z;
+    public GameObject obsRed,obsred2, redBall, z;
     private Vector3 initialpos, fixedPos;
     private bool isFixed;
     // Start is called before the first frame update
@@ -45,6 +45,7 @@ public class jumpingballs : MonoBehaviour
             fixedPos= collision.gameObject.transform.position;
             isFixed = true;
             obsRed.SetActive(false);
+            obsred2.SetActive(false);
         }
         
     }
@@ -53,5 +54,5 @@ public class jumpingballs : MonoBehaviour
         GameObject game =  Instantiate(redBall, z.transform.position, Quaternion.identity);
         Destroy(game, 9f);
     }
-    
+    //me sameer srivastava can do it very well and the best of it has to come......
 }

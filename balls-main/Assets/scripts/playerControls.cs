@@ -12,7 +12,7 @@ public class playerControls : MonoBehaviour
     public float carSpeed = 10.0f;
     public GameObject particles, mainCanvas ,joystickCanvas, volumePost, speedingEfct;
     public GameObject gameOverCanvas, enemyCircle;
-    public Joystick joystick;
+    public Joystick joystickLeft;
     public int lives = 2, levl;
     //public CinemachineCameraOffset cinemachine;
     public GameObject[] heart;
@@ -61,7 +61,8 @@ public class playerControls : MonoBehaviour
         rotationSpeed = 20f;
         levl = 0;
         slider.value = 1;
-//        initialEnemyPosition = enemyCircle.transform.position;
+        Debug.Log(PlayerPrefs.GetInt("joystickAlignment"));
+        //initialEnemyPosition = enemyCircle.transform.position;
         trail = gameObject.GetComponent<TrailRenderer>();
         impulseSource_speeding = GetComponent<CinemachineImpulseSource>();
         mainCanvas.SetActive(true);
@@ -87,8 +88,9 @@ public class playerControls : MonoBehaviour
 
     void Update()
     {
-        movementx = joystick.Horizontal;
-        movementY = joystick.Vertical;
+      
+        movementx = joystickLeft.Horizontal;
+        movementY = joystickLeft.Vertical;
         // Iterate through all the active touches
         RenderObjectsInCamera();
 
@@ -117,9 +119,7 @@ public class playerControls : MonoBehaviour
                 renderer.enabled = false;
             }
         }
-
     }
-
 
     void Move(float x, float y)
     {
@@ -370,6 +370,7 @@ public class playerControls : MonoBehaviour
     }
     void onTakingLive(GameObject gameobj)
     {
+        FindObjectOfType<AudioMnagaer>().Play("lifeup");
         if (lives < 2)
         {
             lives++;
@@ -382,5 +383,22 @@ public class playerControls : MonoBehaviour
             Instantiate(livesBurstGreen, transform.position, Quaternion.identity);
             gameobj.SetActive(false);
         }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "obstacle")
+        {
+            Invoke("spawn", 1.2f);
+            heart[--lives].SetActive(false);
+            FindObjectOfType<AudioMnagaer>().Play("restart");
+            camerashakemanager.instance.cameraShake(impulseSource_out);
+            Instantiate(particles, transform.position, Quaternion.identity);
+            Handheld.Vibrate();
+            gameObject.SetActive(false);
+        }
+    }
+    public void loadmenu()
+    {
+        SceneManager.LoadScene("MainmenuScene");
     }
 }
